@@ -1,3 +1,6 @@
+
+import * as React from "react";  // Added import to fix TS2686 error
+
 import { useState } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import GoalSetupFlow from '@/components/GoalSetup/GoalSetupFlow';
