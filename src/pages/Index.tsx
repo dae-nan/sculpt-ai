@@ -1,14 +1,17 @@
-
 import { useState } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import GoalSetupFlow from '@/components/GoalSetup/GoalSetupFlow';
 import CoachMatchingResults from '@/components/CoachMatching/CoachMatchingResults';
 import useStore from '@/store/useStore';
+import InitialAssessmentForm from "@/components/Assessment/InitialAssessmentForm";
+import useAssessmentStore from "@/store/useAssessmentStore";
 
 const Index = () => {
   const { isGoalSetupComplete } = useStore();
   const [showCoachMatching, setShowCoachMatching] = useState(false);
+  const [assessmentStarted, setAssessmentStarted] = useState(false);
   const [setupComplete, setSetupComplete] = useState(false);
+  const { assessment } = useAssessmentStore();
 
   // Display the appropriate step based on the user's progress
   const handleGoalSetupComplete = () => {
@@ -16,7 +19,13 @@ const Index = () => {
   };
 
   const handleCoachMatchingComplete = () => {
+    setAssessmentStarted(true);
+  };
+
+  const handleAssessmentComplete = () => {
+    // You could show a summary or proceed to next stage here
     setSetupComplete(true);
+    console.log("Assessment complete:", assessment);
   };
 
   return (
@@ -38,11 +47,16 @@ const Index = () => {
         )}
 
         {/* Show Coach Matching Results after Goal Setup */}
-        {(isGoalSetupComplete || showCoachMatching) && !setupComplete && (
+        {(isGoalSetupComplete || showCoachMatching) && !assessmentStarted && !setupComplete && (
           <CoachMatchingResults onComplete={handleCoachMatchingComplete} />
         )}
 
-        {/* Show Success Message after completing both steps */}
+        {/* Show Initial Assessment after coach selection */}
+        {assessmentStarted && !setupComplete && (
+          <InitialAssessmentForm onComplete={handleAssessmentComplete} />
+        )}
+
+        {/* Show Success Message after completing all */}
         {setupComplete && (
           <div className="max-w-md mx-auto text-center space-y-4 py-20">
             <h2 className="text-2xl font-bold">All Set!</h2>
