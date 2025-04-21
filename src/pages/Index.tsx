@@ -8,14 +8,21 @@ import useStore from '@/store/useStore';
 import InitialAssessmentForm from "@/components/Assessment/InitialAssessmentForm";
 import useAssessmentStore from "@/store/useAssessmentStore";
 import DailyPlanPreview from "@/components/DailyPlan/DailyPlanPreview";
+import MorningCheckIn from "@/components/DailyPlan/MorningCheckIn";
+import EndOfDayReflection from "@/components/DailyPlan/EndOfDayReflection";
 import { Link } from "react-router-dom";
+import useCheckInStore from "@/store/useCheckInStore";
+import useReflectionStore from "@/store/useReflectionStore";
 
 const Index = () => {
   const { isGoalSetupComplete, selectedCoach, generateMockDailyPlan, dailyPlan } = useStore();
-  const [showCoachMatching, setShowCoachMatching] = useState(false);
-  const [assessmentStarted, setAssessmentStarted] = useState(false);
-  const [setupComplete, setSetupComplete] = useState(false);
+  const [showCoachMatching, setShowCoachMatching] = React.useState(false);
+  const [assessmentStarted, setAssessmentStarted] = React.useState(false);
+  const [setupComplete, setSetupComplete] = React.useState(false);
   const { assessment } = useAssessmentStore();
+
+  const { checkIn } = useCheckInStore();
+  const { reflection } = useReflectionStore();
 
   const handleGoalSetupComplete = () => {
     setShowCoachMatching(true);
@@ -36,6 +43,10 @@ const Index = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setupComplete, selectedCoach, assessment]);
+
+  const today = new Date().toISOString().slice(0, 10);
+  const showCheckIn = setupComplete && (!checkIn || checkIn.date !== today);
+  const showEndOfDayReflection = setupComplete && dailyPlan && (!reflection || reflection.date !== today);
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,16 +78,22 @@ const Index = () => {
         )}
 
         {setupComplete && (
-          <div>
-            <div className="max-w-md mx-auto text-center space-y-4 py-20">
-              <h2 className="text-2xl font-bold">All Set!</h2>
-              <p className="text-muted-foreground">
-                Your personalized fitness and nutrition plan is ready. In a full application, 
-                you would now proceed to the dashboard to see your program.
-              </p>
-            </div>
-            <DailyPlanPreview />
-          </div>
+          <>
+            {showCheckIn && <MorningCheckIn />}
+            {(!showCheckIn) && (
+              <>
+                <div className="max-w-md mx-auto text-center space-y-4 py-20">
+                  <h2 className="text-2xl font-bold">All Set!</h2>
+                  <p className="text-muted-foreground">
+                    Your personalized fitness and nutrition plan is ready. In a full application, 
+                    you would now proceed to the dashboard to see your program.
+                  </p>
+                </div>
+                <DailyPlanPreview />
+                {showEndOfDayReflection && <EndOfDayReflection />}
+              </>
+            )}
+          </>
         )}
       </main>
 
