@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore, { trainingSplitTemplates } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
+import { BicepsFlexed, Armchair, Body, Dumbbell } from "lucide-react";
 
 interface WorkoutTemplateStepProps {
   onNext: () => void;
@@ -11,6 +12,22 @@ interface WorkoutTemplateStepProps {
 }
 
 const dayShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+// Map workout names to icons
+const workoutIconMap: Record<string, React.ReactNode> = {
+  Push: <BicepsFlexed size={20} color="#7E69AB" />,
+  Pull: <Armchair size={20} color="#7E69AB" />,
+  Shoulders: <Body size={20} color="#7E69AB" />,
+  Upper: <Dumbbell size={20} color="#7E69AB" />,
+  Lower: <Dumbbell size={20} color="#7E69AB" />,
+  Legs: <Dumbbell size={20} color="#7E69AB" />,
+  Chest: <BicepsFlexed size={20} color="#7E69AB" />,
+  Back: <Armchair size={20} color="#7E69AB" />,
+  Arms: <BicepsFlexed size={20} color="#7E69AB" />,
+  "Body-part Split": <Dumbbell size={20} color="#7E69AB" />,
+  // fallback icon if not matched
+  "-": null,
+};
 
 export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateStepProps) {
   const { trainingSplit, setTrainingSplit } = useStore();
@@ -45,21 +62,28 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
       <Card className="w-full max-w-md mx-auto p-4 rounded-xl border bg-soft-gray shadow-sm">
         <div className="mb-2 font-medium">{selectedTemplate.name} Preview</div>
         <div className="grid grid-cols-7 gap-2 text-xs">
-          {dayShort.map(day => (
-            <div
-              key={day}
-              className={`flex flex-col items-center py-2 rounded ${
-                selectedTemplate.days[day as keyof typeof selectedTemplate.days] !== "-"
-                  ? "bg-[#E5DEFF] font-semibold text-primary"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              <span className="text-xs">{day}</span>
-              <span>
-                {selectedTemplate.days[day as keyof typeof selectedTemplate.days]}
-              </span>
-            </div>
-          ))}
+          {dayShort.map(day => {
+            const workout = selectedTemplate.days[day as keyof typeof selectedTemplate.days];
+            const icon = workoutIconMap[workout] ?? null;
+            const isWorkoutDay = workout !== "-";
+
+            return (
+              <div
+                key={day}
+                className={`flex flex-col items-center justify-center py-2 rounded ${
+                  isWorkoutDay ? "bg-[#E5DEFF] font-semibold text-primary" : "bg-muted text-muted-foreground"
+                }`}
+                title={isWorkoutDay ? workout : ""}
+              >
+                <span className="text-xs mb-1">{day}</span>
+                {icon ? (
+                  <div className="flex justify-center items-center">{icon}</div>
+                ) : (
+                  <div style={{ height: 20, width: 20 }} /> // Empty placeholder to keep grid consistent
+                )}
+              </div>
+            );
+          })}
         </div>
       </Card>
 
@@ -70,3 +94,4 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
     </div>
   );
 }
+
