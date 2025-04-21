@@ -98,9 +98,9 @@ const AssessmentBodyFatGuideStep = ({ onBack, onSubmit }: Props) => {
             <button
               key={g.value}
               type="button"
-              className={\`flex flex-col items-center border rounded px-2 py-2 flex-1
-                \${localValue === g.value ? "bg-primary text-white" : "bg-muted"}
-                hover:bg-primary/90\`}
+              className={`flex flex-col items-center border rounded px-2 py-2 flex-1
+                ${localValue === g.value ? "bg-primary text-white" : "bg-muted"}
+                hover:bg-primary/90`}
               onClick={() => handleSelect(g.value)}
             >
               <img
@@ -124,4 +124,3 @@ const AssessmentBodyFatGuideStep = ({ onBack, onSubmit }: Props) => {
 };
 
 export default AssessmentBodyFatGuideStep;
-
