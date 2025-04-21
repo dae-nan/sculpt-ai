@@ -35,24 +35,26 @@ export default function ProgressChartCard({
             progress: { color, label: title }
           }}
         >
-          <ResponsiveContainer width="100%" height={120}>
-            <LineChart data={data}>
-              <XAxis dataKey="date" axisLine={false} tickLine={false} fontSize={10}/>
-              <YAxis width={28} axisLine={false} tickLine={false} fontSize={10} />
-              <Tooltip content={<ChartTooltipContent />} />
-              <Line
-                type="monotone"
-                dataKey={dataKey}
-                stroke={color}
-                dot={false}
-                strokeWidth={2.5}
-                name={yLabel || title}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-          <ChartLegendContent payload={[
-            { value: title, color, type: "line" }
-          ]} />
+          <div className="w-full h-full">
+            <ResponsiveContainer width="100%" height={120}>
+              <LineChart data={data}>
+                <XAxis dataKey="date" axisLine={false} tickLine={false} fontSize={10}/>
+                <YAxis width={28} axisLine={false} tickLine={false} fontSize={10} />
+                <Tooltip content={<ChartTooltipContent />} />
+                <Line
+                  type="monotone"
+                  dataKey={dataKey}
+                  stroke={color}
+                  dot={false}
+                  strokeWidth={2.5}
+                  name={yLabel || title}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+            <ChartLegendContent payload={[
+              { value: title, color, type: "line" }
+            ]} />
+          </div>
         </ChartContainer>
       </CardContent>
     </Card>
