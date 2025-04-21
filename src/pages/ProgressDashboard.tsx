@@ -3,7 +3,7 @@ import useProgressStore from "@/store/useProgressStore";
 import ProgressChartCard from "@/components/Progress/ProgressChartCard";
 import ProgressPhotoCompare from "@/components/Progress/ProgressPhotoCompare";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { BarChart } from "lucide-react";
+import { BarChart, Weight, User } from "lucide-react";
 
 const formatAvg = (arr: number[]) => arr.length ? (arr.reduce((a,b) => a+b, 0) / arr.length).toFixed(1) : "0";
 
@@ -21,7 +21,7 @@ export default function ProgressDashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <ProgressChartCard
           title="Weight Trend"
-          iconName="weight"
+          icon={Weight}
           data={entries}
           dataKey="weight"
           color="#6E59A5"
@@ -29,7 +29,7 @@ export default function ProgressDashboard() {
         />
         <ProgressChartCard
           title="Body Fat %"
-          iconName="body"
+          icon={User}
           data={entries}
           dataKey="bodyFat"
           color="#9b87f5"
