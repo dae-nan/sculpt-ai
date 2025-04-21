@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore, { trainingSplitTemplates } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
-import { BicepsFlexed, Armchair, Dumbbell, User } from "lucide-react"; // replaced Body with User
+import { BicepsFlexed, Armchair, Dumbbell, User } from "lucide-react"; // Use User instead of Body
 
 interface WorkoutTemplateStepProps {
   onNext: () => void;
@@ -17,7 +17,7 @@ const dayShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const workoutIconMap: Record<string, React.ReactNode> = {
   Push: <BicepsFlexed size={20} color="#7E69AB" />,
   Pull: <Armchair size={20} color="#7E69AB" />,
-  Shoulders: <User size={20} color="#7E69AB" />,   // changed from Body to User
+  Shoulders: <User size={20} color="#7E69AB" />,   // Use User instead of Body
   Upper: <Dumbbell size={20} color="#7E69AB" />,
   Lower: <Dumbbell size={20} color="#7E69AB" />,
   Legs: <Dumbbell size={20} color="#7E69AB" />,
@@ -32,16 +32,16 @@ const workoutIconMap: Record<string, React.ReactNode> = {
 export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateStepProps) {
   const { trainingSplit, setTrainingSplit } = useStore();
   const [localSplit, setLocalSplit] = useState<keyof typeof trainingSplitTemplates>("3-day");
-  
+
   // Ensure we have a valid initial value from the store, defaulting to "3-day" if needed
   useEffect(() => {
     if (trainingSplit && trainingSplitTemplates[trainingSplit]) {
       setLocalSplit(trainingSplit);
     } else {
-      // If the stored value is invalid, update it to a default value
       setTrainingSplit("3-day");
       setLocalSplit("3-day");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trainingSplit, setTrainingSplit]);
 
   const handleSelect = (split: keyof typeof trainingSplitTemplates) => {
@@ -49,7 +49,7 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
     setTrainingSplit(split);
   };
 
-  // Make sure we always have a valid template by defaulting to "3-day" if needed
+  // Always ensure selectedTemplate is defined
   const selectedTemplate = trainingSplitTemplates[localSplit] || trainingSplitTemplates["3-day"];
 
   return (
@@ -75,9 +75,10 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
         <div className="mb-2 font-medium">{selectedTemplate.name} Preview</div>
         <div className="grid grid-cols-7 gap-2 text-xs">
           {dayShort.map(day => {
-            const workout = selectedTemplate.days[day as keyof typeof selectedTemplate.days];
+            // Defensive: Fallback to "-" if day is not defined
+            const workout = selectedTemplate.days[day as keyof typeof selectedTemplate.days] ?? "-";
             const icon = workoutIconMap[workout] ?? null;
-            const isWorkoutDay = workout !== "-";
+            const isWorkoutDay = workout !== "-" && !!icon;
 
             return (
               <div
@@ -91,7 +92,7 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
                 {icon ? (
                   <div className="flex justify-center items-center">{icon}</div>
                 ) : (
-                  <div style={{ height: 20, width: 20 }} /> // Empty placeholder to keep grid consistent
+                  <div style={{ height: 20, width: 20 }} /> // Keep grid consistent
                 )}
               </div>
             );
