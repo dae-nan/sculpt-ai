@@ -56,6 +56,10 @@ interface AppState {
   dailyPlan: DailyPlan | null;
   setDailyPlan: (plan: DailyPlan) => void;
   generateMockDailyPlan: (coach: Coach | null, assessment: any) => void;
+  
+  // Training split state
+  trainingSplit: keyof typeof trainingSplitTemplates;
+  setTrainingSplit: (split: keyof typeof trainingSplitTemplates) => void;
 }
 
 // Default goal values
@@ -137,6 +141,46 @@ function createMockDailyPlan(
   return plan;
 }
 
+// Predefine schedule templates
+export const trainingSplitTemplates = {
+  "3-day": {
+    name: "Push-Pull-Legs",
+    days: {
+      Mon: "Push",
+      Tue: "-",
+      Wed: "Pull",
+      Thu: "-",
+      Fri: "Legs",
+      Sat: "-",
+      Sun: "-"
+    }
+  },
+  "4-day": {
+    name: "Upper-Lower (A)",
+    days: {
+      Mon: "Upper",
+      Tue: "Lower",
+      Wed: "-",
+      Thu: "Upper",
+      Fri: "Lower",
+      Sat: "-",
+      Sun: "-"
+    }
+  },
+  "5-day": {
+    name: "Body-part Split",
+    days: {
+      Mon: "Chest",
+      Tue: "Back",
+      Wed: "Legs",
+      Thu: "Shoulders",
+      Fri: "Arms",
+      Sat: "-",
+      Sun: "-"
+    }
+  }
+};
+
 // Create store
 const useStore = create<AppState>((set, get) => ({
   // Goal setup state
@@ -163,7 +207,11 @@ const useStore = create<AppState>((set, get) => ({
     const goals = get().goals;
     const plan = createMockDailyPlan(coach, assessment, goals);
     set({ dailyPlan: plan });
-  }
+  },
+  
+  // Training split state
+  trainingSplit: "3-day",
+  setTrainingSplit: (split) => set({ trainingSplit: split }),
 }));
 
 export default useStore;

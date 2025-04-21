@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import useStore from "@/store/useStore";
@@ -7,6 +6,7 @@ import WeightBodyFatStep from "./WeightBodyFatStep";
 import FitnessObjectivesStep from "./FitnessObjectivesStep";
 import TrainingFrequencyStep from "./TrainingFrequencyStep";
 import SummaryStep from "./SummaryStep";
+import WorkoutTemplateStep from "./WorkoutTemplateStep";
 
 interface GoalSetupFlowProps {
   onComplete: () => void;
@@ -20,7 +20,7 @@ const GoalSetupFlow = ({ onComplete }: GoalSetupFlowProps) => {
 
   return (
     <div className="max-w-2xl mx-auto px-4">
-      <GoalSetupProgress currentStep={currentStep} totalSteps={4} />
+      <GoalSetupProgress currentStep={currentStep} totalSteps={5} />
       
       <Card>
         <CardContent className="pt-6">
@@ -43,6 +43,13 @@ const GoalSetupFlow = ({ onComplete }: GoalSetupFlowProps) => {
           )}
           
           {currentStep === 4 && (
+            <WorkoutTemplateStep
+              onNext={goToNextStep}
+              onBack={goToPreviousStep}
+            />
+          )}
+          
+          {currentStep === 5 && (
             <SummaryStep 
               onSubmit={onComplete} 
               onBack={goToPreviousStep} 
