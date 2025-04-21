@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore, { trainingSplitTemplates } from "@/store/useStore";
 import { Button } from "@/components/ui/button";
-import { BicepsFlexed, Armchair, Body, Dumbbell } from "lucide-react";
+import { BicepsFlexed, Armchair, Dumbbell, User } from "lucide-react"; // replaced Body with User
 
 interface WorkoutTemplateStepProps {
   onNext: () => void;
@@ -17,7 +17,7 @@ const dayShort = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const workoutIconMap: Record<string, React.ReactNode> = {
   Push: <BicepsFlexed size={20} color="#7E69AB" />,
   Pull: <Armchair size={20} color="#7E69AB" />,
-  Shoulders: <Body size={20} color="#7E69AB" />,
+  Shoulders: <User size={20} color="#7E69AB" />,   // changed from Body to User
   Upper: <Dumbbell size={20} color="#7E69AB" />,
   Lower: <Dumbbell size={20} color="#7E69AB" />,
   Legs: <Dumbbell size={20} color="#7E69AB" />,
@@ -94,4 +94,3 @@ export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateS
     </div>
   );
 }
-
