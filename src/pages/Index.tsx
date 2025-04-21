@@ -1,4 +1,3 @@
-
 import * as React from "react";  // Added import to fix TS2686 error
 
 import { useState } from 'react';
@@ -9,6 +8,7 @@ import useStore from '@/store/useStore';
 import InitialAssessmentForm from "@/components/Assessment/InitialAssessmentForm";
 import useAssessmentStore from "@/store/useAssessmentStore";
 import DailyPlanPreview from "@/components/DailyPlan/DailyPlanPreview";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const { isGoalSetupComplete, selectedCoach, generateMockDailyPlan, dailyPlan } = useStore();
@@ -40,11 +40,16 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-background py-6 border-b">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 flex items-center justify-between">
           <h1 className="text-3xl font-bold">
             Sculpt
             <span className="text-primary ml-1">AI</span>
           </h1>
+          <nav>
+            <Link to="/progress" className="ml-4 text-sm text-primary underline hover:opacity-70 transition">
+              Progress
+            </Link>
+          </nav>
         </div>
       </header>
 
