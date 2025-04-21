@@ -1,0 +1,41 @@
+%% Code Structure Map for Sculpt-AI Project
+graph TD
+    A[src] --> B[App.tsx]
+    A --> C[pages/]
+    A --> D[components/]
+    A --> E[store/]
+    A --> F[lib/]
+    A --> G[hooks/]
+    A --> H[data/]
+    
+    %% Pages and Routes
+    C --> C1[Home]
+    C --> C2[About]
+    C --> C3[...other pages]
+    
+    %% Components
+    D --> D1[ui/]
+    D --> D2[shared/]
+    D --> D3[feature-specific/]
+    
+    %% State Management
+    E --> E1[store.ts]
+    E --> E2[slices/]
+    
+    %% Utilities
+    F --> F1[constants.ts]
+    F --> F2[utils.ts]
+    F --> F3[api.ts]
+    
+    %% Config Files
+    I[Root] --> J[vite.config.ts]
+    I --> K[tailwind.config.ts]
+    I --> L[tsconfig.json]
+    I --> M[postcss.config.js]
+    
+    %% Key Relationships
+    B --> C
+    B --> D
+    B --> E
+    D1 --> F
+    E --> G

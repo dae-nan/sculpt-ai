@@ -1,0 +1,21 @@
+gitGraph
+    commit
+    branch main
+    checkout main
+    commit
+    branch feature-pages
+    commit type: "feat" tag: "pages/"    # Pages depend on App.tsx
+    checkout main
+    merge feature-pages
+    branch feature-components
+    commit type: "feat" tag: "components/"    # Components depend on lib/utils
+    checkout main
+    merge feature-components
+    branch feature-store
+    commit type: "feat" tag: "store/"    # Store slices depend on hooks/
+    checkout main
+    merge feature-store
+    branch feature-lib
+    commit type: "feat" tag: "lib/"      # Utilities used by components + store
+    checkout main
+    merge feature-lib
