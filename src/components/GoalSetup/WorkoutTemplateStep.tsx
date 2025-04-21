@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import useStore, { trainingSplitTemplates } from "@/store/useStore";
@@ -31,14 +31,26 @@ const workoutIconMap: Record<string, React.ReactNode> = {
 
 export default function WorkoutTemplateStep({ onNext, onBack }: WorkoutTemplateStepProps) {
   const { trainingSplit, setTrainingSplit } = useStore();
-  const [localSplit, setLocalSplit] = useState<keyof typeof trainingSplitTemplates>(trainingSplit);
+  const [localSplit, setLocalSplit] = useState<keyof typeof trainingSplitTemplates>("3-day");
+  
+  // Ensure we have a valid initial value from the store, defaulting to "3-day" if needed
+  useEffect(() => {
+    if (trainingSplit && trainingSplitTemplates[trainingSplit]) {
+      setLocalSplit(trainingSplit);
+    } else {
+      // If the stored value is invalid, update it to a default value
+      setTrainingSplit("3-day");
+      setLocalSplit("3-day");
+    }
+  }, [trainingSplit, setTrainingSplit]);
 
   const handleSelect = (split: keyof typeof trainingSplitTemplates) => {
     setLocalSplit(split);
     setTrainingSplit(split);
   };
 
-  const selectedTemplate = trainingSplitTemplates[localSplit];
+  // Make sure we always have a valid template by defaulting to "3-day" if needed
+  const selectedTemplate = trainingSplitTemplates[localSplit] || trainingSplitTemplates["3-day"];
 
   return (
     <div className="space-y-8">
